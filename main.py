@@ -4,61 +4,111 @@ import PIL.Image
 
 import PIL.ExifTags
 
+import shutil
+
 liste_bilder = []
+
+liste_monate = ["platzhalter", "_Januar", "_Februar", "_März", "_April", "_Mai", "_Juni", "_Juli", "_August", "_September", "_Oktober", "_November", "_Dezember"]
 
 path = Path(r'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder')
 for path in path.iterdir():
     if path.suffix in ['.jpg', '.png', '.jpeg']:
         liste_bilder.append(path.name)
 
-img = PIL.Image.open(r'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\51370198468_f3fde7f405_o.jpg')
-exif_data = img.getexif()
-
-exif = {
-    PIL.ExifTags.TAGS[k]: v
-    for k, v in img.getexif().items()
-    if k in PIL.ExifTags.TAGS
-}
-
-datumuhrzeit = exif['DateTime']
-
-
-
-
-
-
-
-
-
-
-
-
 print(liste_bilder)
 
+while True:
+    try:
+        eingabe = int(input("""Willst du die Bilder in die Ordner kopieren[1] oder verschieben[2] ?
+> """))
+        break
+    except ValueError:
+        print("Biite gib 1 oder 2 ein!")
 
-print(exif)
 
-if 'DateTime' in exif:
-    print(datumuhrzeit)
-else:
-    print("DateTime attribute not found in the image's EXIF data.")
+def kopieren(quellpfad, zielpfad):
+    source = quellpfad
 
-jahr = ""
-i = 0
-while i < 4:
-    jahr = jahr + datumuhrzeit[i]
-    i = i + 1
+    destination = zielpfad
 
-print(jahr)
+    shutil.copy(source, destination)
 
-monat = ""
-o = 5
-while o < 7:
-    monat = monat + datumuhrzeit[o]
-    o = o + 1
 
-print(monat)
+def verschieben(quellpfad, zielpfad):
+    source = quellpfad
 
-p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}')
-p.mkdir(parents=True, exist_ok=True)
+    destination = zielpfad
+
+    shutil.move(source, destination)
+
+
+def jahr_monat_ausgabe(bild, eingabe):
+    img = PIL.Image.open(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{bild}')
+
+
+    exif = {
+        PIL.ExifTags.TAGS[k]: v
+        for k, v in img.getexif().items()
+        if k in PIL.ExifTags.TAGS
+    }
+
+
+    datumuhrzeit = ""
+
+    quelle = rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{bild}'
+
+    if 'DateTime' in exif:
+        datumuhrzeit = exif['DateTime']
+
+        global jahr
+        jahr = ""
+        i = 0
+        while i < 4:
+            jahr = jahr + datumuhrzeit[i]
+            i = i + 1
+        p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}')
+        p.mkdir(parents=True, exist_ok=True)
+
+        monat = ""
+        o = 5
+        while o < 7:
+            monat = monat + datumuhrzeit[o]
+            o = o + 1
+
+        monat = monat + liste_monate[int(monat)]
+        p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}\{monat}')
+        p.mkdir(parents=True, exist_ok=True)
+
+
+        ziel = rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}\{monat}'
+
+        if eingabe == 1:
+            kopieren(quelle, ziel)
+
+        elif eingabe == 2:
+            verschieben(quelle, ziel)
+
+    else:
+        print(f"DateTime Attribut nicht gefunden in den EXIF-Daten der Datei {bild} ,es wurde in den Ordner 'keindatum' kopiert/verschoben.")
+        datumuhrzeit = 0000
+        p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\keindatum')
+        p.mkdir(parents=True, exist_ok=True)
+
+        ziel = rf'C:\Users\intern1\Documents\Fotos-sortieren/Ablage-Bilder\keindatum'
+
+        if eingabe == 1:
+            kopieren(quelle, ziel)
+
+        elif eingabe == 2:
+            verschieben(quelle, ziel)
+
+
+
+
+
+
+a = 0
+for i in liste_bilder:
+    jahr_monat_ausgabe(liste_bilder[a], eingabe)
+    a += 1
 
