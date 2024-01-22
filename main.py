@@ -10,7 +10,7 @@ liste_bilder = []
 
 liste_monate = ["platzhalter", "_Januar", "_Februar", "_März", "_April", "_Mai", "_Juni", "_Juli", "_August", "_September", "_Oktober", "_November", "_Dezember"]
 
-path = Path(r'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder')
+path = Path(r'C:\Users\intern1\Pictures\sortierte-bilder')
 for path in path.iterdir():
     if path.suffix in ['.jpg', '.png', '.jpeg']:
         liste_bilder.append(path.name)
@@ -43,7 +43,7 @@ def verschieben(quellpfad, zielpfad):
 
 
 def jahr_monat_ausgabe(bild, eingabe):
-    img = PIL.Image.open(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{bild}')
+    img = PIL.Image.open(rf'C:\Users\intern1\Pictures\sortierte-bilder\{bild}')
 
 
     exif = {
@@ -55,7 +55,7 @@ def jahr_monat_ausgabe(bild, eingabe):
 
     datumuhrzeit = ""
 
-    quelle = rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{bild}'
+    quelle = rf'C:\Users\intern1\Pictures\sortierte-bilder\{bild}'
 
     if 'DateTime' in exif:
         datumuhrzeit = exif['DateTime']
@@ -66,7 +66,7 @@ def jahr_monat_ausgabe(bild, eingabe):
         while i < 4:
             jahr = jahr + datumuhrzeit[i]
             i = i + 1
-        p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}')
+        p = Path(rf'C:\Users\intern1\Pictures\sortierte-bilder\{jahr}')
         p.mkdir(parents=True, exist_ok=True)
 
         monat = ""
@@ -76,11 +76,14 @@ def jahr_monat_ausgabe(bild, eingabe):
             o = o + 1
 
         monat = monat + liste_monate[int(monat)]
-        p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}\{monat}')
+        p = Path(rf'C:\Users\intern1\Pictures\sortierte-bilder\{jahr}\{monat}')
         p.mkdir(parents=True, exist_ok=True)
 
 
-        ziel = rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\{jahr}\{monat}'
+        ziel = rf'C:\Users\intern1\Pictures\sortierte-bilder\{jahr}\{monat}'
+
+        img.close()
+
 
         if eingabe == 1:
             kopieren(quelle, ziel)
@@ -91,20 +94,18 @@ def jahr_monat_ausgabe(bild, eingabe):
     else:
         print(f"DateTime Attribut nicht gefunden in den EXIF-Daten der Datei {bild} ,es wurde in den Ordner 'keindatum' kopiert/verschoben.")
         datumuhrzeit = 0000
-        p = Path(rf'C:\Users\intern1\Documents\Fotos-sortieren\Ablage-Bilder\keindatum')
+        p = Path(rf'C:\Users\intern1\Pictures\sortierte-bilder\keindatum')
         p.mkdir(parents=True, exist_ok=True)
 
-        ziel = rf'C:\Users\intern1\Documents\Fotos-sortieren/Ablage-Bilder\keindatum'
+        ziel = rf'C:\Users\intern1\Pictures\sortierte-bilder\keindatum'
+
+        img.close()
 
         if eingabe == 1:
             kopieren(quelle, ziel)
 
         elif eingabe == 2:
             verschieben(quelle, ziel)
-
-
-
-
 
 
 a = 0
