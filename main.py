@@ -53,7 +53,6 @@ Wie willst du die Bilder sortieren ?
         print("Biite gib eine der Zahlen ein ein!")
 
 
-
 def kopieren(source, destination):
 
     shutil.copy(source, destination)
@@ -62,8 +61,6 @@ def kopieren(source, destination):
 def verschieben(source, destination):
 
     shutil.move(source, destination)
-
-
 
 
 def exif_lesen(bild):
@@ -92,28 +89,14 @@ def exif_lesen(bild):
             o = o + 1
         monat = monat + liste_monate[int(monat)]
 
-
-
         p = 8
         while p < 10:
             tag = tag + datumuhrzeit[p]
             p = p + 1
 
-
-
-
-
-
     img.close()
 
     return jahr, monat, tag
-
-
-
-
-
-
-
 
 
 a = 0
@@ -160,8 +143,6 @@ for i in liste_bilder:
             p = Path(rf'{eingabe_pfad}\{datum[1]}\{datum[2]}')
             p.mkdir(parents=True, exist_ok=True)
             ziel = rf'{eingabe_pfad}\{datum[1]}\{datum[2]}'
-
-
 
     else:
         p = Path(rf'{eingabe_pfad}\kein_datum')
