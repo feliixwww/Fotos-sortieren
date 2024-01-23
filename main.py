@@ -17,6 +17,16 @@ Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hin
 (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)
 > """)
 
+
+eingabe_pfadziel = input("""
+Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder [1], wenn sie im gleichen Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!
+(Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)
+> """)
+
+if eingabe_pfadziel == "1":
+    eingabe_pfadziel = eingabe_pfad
+
+
 path = Path(rf'{eingabe_pfad}')
 for path in path.iterdir():
     if path.suffix in ['.jpg', '.png', '.jpeg']:
@@ -105,49 +115,49 @@ for i in liste_bilder:
     quelle = rf'{eingabe_pfad}\{liste_bilder[a]}'
     if datum[0] != "":
         if eingabe_sortierung == 1:
-            p = Path(rf'{eingabe_pfad}\{datum[0]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}')
             p.mkdir(parents=True, exist_ok=True)
-            ziel = rf'{eingabe_pfad}\{datum[0]}'
+            ziel = rf'{eingabe_pfadziel}\{datum[0]}'
 
         elif eingabe_sortierung == 2:
-            p = Path(rf'{eingabe_pfad}\{datum[0]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}')
             p.mkdir(parents=True, exist_ok=True)
-            p = Path(rf'{eingabe_pfad}\{datum[0]}\{datum[1]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]}')
             p.mkdir(parents=True, exist_ok=True)
-            ziel = rf'{eingabe_pfad}\{datum[0]}\{datum[1]}'
+            ziel = rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]}'
 
         elif eingabe_sortierung == 3:
-            p = Path(rf'{eingabe_pfad}\{datum[0]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}')
             p.mkdir(parents=True, exist_ok=True)
-            p = Path(rf'{eingabe_pfad}\{datum[0]}\{datum[1]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]}')
             p.mkdir(parents=True, exist_ok=True)
-            p = Path(rf'{eingabe_pfad}\{datum[0]}\{datum[1]}\{datum[2]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]}\{datum[2]}')
             p.mkdir(parents=True, exist_ok=True)
-            ziel = rf'{eingabe_pfad}\{datum[0]}\{datum[1]}\{datum[2]}'
+            ziel = rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]}\{datum[2]}'
 
         elif eingabe_sortierung == 4:
-            p = Path(rf'{eingabe_pfad}\{datum[0]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}')
             p.mkdir(parents=True, exist_ok=True)
-            p = Path(rf'{eingabe_pfad}\{datum[0]}\{datum[1]} der_{datum[2]}te')
+            p = Path(rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]} der_{datum[2]}te')
             p.mkdir(parents=True, exist_ok=True)
-            ziel = rf'{eingabe_pfad}\{datum[0]}\{datum[1]} der_{datum[2]}te'
+            ziel = rf'{eingabe_pfadziel}\{datum[0]}\{datum[1]} der_{datum[2]}te'
 
         elif eingabe_sortierung == 5:
-            p = Path(rf'{eingabe_pfad}\{datum[1]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[1]}')
             p.mkdir(parents=True, exist_ok=True)
-            ziel = rf'{eingabe_pfad}\{datum[1]}'
+            ziel = rf'{eingabe_pfadziel}\{datum[1]}'
 
         elif eingabe_sortierung == 6:
-            p = Path(rf'{eingabe_pfad}\{datum[1]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[1]}')
             p.mkdir(parents=True, exist_ok=True)
-            p = Path(rf'{eingabe_pfad}\{datum[1]}\{datum[2]}')
+            p = Path(rf'{eingabe_pfadziel}\{datum[1]}\{datum[2]}')
             p.mkdir(parents=True, exist_ok=True)
-            ziel = rf'{eingabe_pfad}\{datum[1]}\{datum[2]}'
+            ziel = rf'{eingabe_pfadziel}\{datum[1]}\{datum[2]}'
 
     else:
-        p = Path(rf'{eingabe_pfad}\kein_datum')
+        p = Path(rf'{eingabe_pfadziel}\kein_datum')
         p.mkdir(parents=True, exist_ok=True)
-        ziel = rf'{eingabe_pfad}\kein_datum'
+        ziel = rf'{eingabe_pfadziel}\kein_datum'
         so_oft_keine_daten = so_oft_keine_daten + 1
 
     if eingabe == 1:
