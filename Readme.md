@@ -1,8 +1,8 @@
 ## Vor dem Start
 
 - Damit das Programm funktioniert, werden die Module "pillow" und "pathlib" benötigt
-- Diese lassen sich im Terminal mit "pip install pillow" und "pip install pathlib" installieren
-- Möglicherweise musst du dafür erst noch "pip" installieren, was mit "easyinstall pip" gemacht wird
+- Diese lassen sich im Terminal mit `$ pip install pillow` und `$ pip install pathlib` installieren
+- Möglicherweise musst du dafür erst noch "pip" installieren, was mit `$ easyinstall pip` gemacht wird
 
 
 ## Auswahl der Quelle
@@ -16,7 +16,7 @@ im Programm führen kann
 ## Auswahl des Ziels
 
 - Das gleiche Prozedere gilt auch beim auswählen des Zielordners im Anschluss, hier gibt es aber, um Zeit zu sparen
-auch die Option, nur eine "1" zu schreiben, wodurch die sortierten Ordner in dem Verzeichnis erstellt werden, wo sich
+auch die Option, nur eine `1` zu schreiben, wodurch die sortierten Ordner in dem Verzeichnis erstellt werden, wo sich
 deine Bilder, laut der vorher gemachten Angabe, zurzeit befinden
 
 ## Kopieren oder verschieben?
@@ -25,7 +25,7 @@ deine Bilder, laut der vorher gemachten Angabe, zurzeit befinden
 dateipfad die richtigen Bilder enthält, da es sonst ziemlich mühselig werden könnte, vor allem, nachdem man verschoben
 hat, die Dateien aus den Ordnern wieder herauszuholen
 - Wie bereits erwähnt gibt es jetzt die Option, die Bilder entweder zu kopieren, oder zu verscieben, wähle deine
-Bevorzugte Methode mit "1" zum kopieren oder "2" zum verschieben aus
+Bevorzugte Methode mit `1` zum kopieren oder `2` zum verschieben aus
 
 ## Zeitstrukturierung
 
