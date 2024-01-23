@@ -10,7 +10,8 @@ so_oft_keine_daten = 0
 
 liste_bilder = []
 
-liste_monate = ["platzhalter", "_Januar", "_Februar", "_März", "_April", "_Mai", "_Juni", "_Juli", "_August", "_September", "_Oktober", "_November", "_Dezember"]
+liste_monate = ["platzhalter", "_Januar", "_Februar", "_März", "_April", "_Mai", "_Juni", "_Juli", "_August",
+                "_September", "_Oktober", "_November", "_Dezember"]
 
 eingabe_pfad = input("""
 Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hinein!
@@ -19,7 +20,8 @@ Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hin
 
 
 eingabe_pfadziel = input("""
-Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder [1], wenn sie im gleichen Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!
+Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder [1], wenn sie im gleichen
+Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!
 (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)
 > """)
 
@@ -61,7 +63,7 @@ Wie willst du die Bilder sortieren ?
 [6] Monat > Tag
 
 > """))
-        if eingabe_sortierung in [1, 2 , 3, 4 ,5 ,6]:
+        if eingabe_sortierung in [1, 2, 3, 4, 5, 6]:
             break
         else:
             print("Biite gib eine der Zahlen ein!")

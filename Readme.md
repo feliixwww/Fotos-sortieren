@@ -15,7 +15,7 @@ im Programm führen kann
 
 ## Auswahl des Ziels
 
-- Das gleiche Prozedere gilt auch beim auswaählen des Zielordners im Anschluss, hier gibt es aber, um Zeit zu sparen
+- Das gleiche Prozedere gilt auch beim auswählen des Zielordners im Anschluss, hier gibt es aber, um Zeit zu sparen
 auch die Option, nur eine "1" zu schreiben, wodurch die sortierten Ordner in dem Verzeichnis erstellt werden, wo sich
 deine Bilder, laut der vorher gemachten Angabe, zurzeit befinden
 
