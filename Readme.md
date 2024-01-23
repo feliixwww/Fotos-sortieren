@@ -34,23 +34,23 @@ Bevorzugte Methode mit "1" zum kopieren oder "2" zum verschieben aus
 
 - Bei "1" werden die Bilder nur nach Jahren sortiert
 - Beispiel: 2015 > Bild.png
-
+___
 
 - Bei "2" werden zudem Ordner mit den Namen der Monate in den Jahresordnern erstellt
 - Beispiel: 2016 > 08_August > Bild.png
-
+___
 
 - Bei "3" gibt es in den Jahr-Ordnern, die Monate und darin, jeweils die Tage
 - Beispiel: 2017 > 09_September > 04 > Bild.png
-
+___
 
 - Bei "4" werden die Ordner im Jahr-Ordner, mit Monaten und Tagesangaben erstellt
 - Beispiel: 2018 > 10_Oktober der_06te > Bild.png
-
+___
 
 - Bei "5" werden die Bilder nur in Order, der jeweiligen Monate sortiert
 - Beispiel: 11_November > Bild.png
-
+___
 
 - Bei "6" werden die Bilder in ordner der jeweiligen Monate, sowie darunter Tage sortiert
 - Beispiel: 12_Dezember > 08 > Bild.png
