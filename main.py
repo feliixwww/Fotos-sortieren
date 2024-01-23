@@ -6,6 +6,8 @@ import PIL.ExifTags
 
 import shutil
 
+
+
 so_oft_keine_daten = 0
 
 liste_bilder = []
@@ -13,10 +15,12 @@ liste_bilder = []
 liste_monate = ["platzhalter", "_Januar", "_Februar", "_März", "_April", "_Mai", "_Juni", "_Juli", "_August",
                 "_September", "_Oktober", "_November", "_Dezember"]
 
+
 eingabe_pfad = input("""
 Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hinein!
 (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)
 > """)
+
 
 
 eingabe_pfadziel = input("""
@@ -89,6 +93,7 @@ def exif_lesen(bild):
         for k, v in img.getexif().items()
         if k in PIL.ExifTags.TAGS
     }
+
 
     datumuhrzeit = ""
     jahr = ""
@@ -177,3 +182,5 @@ for i in liste_bilder:
 
 print(f"""
 In {so_oft_keine_daten} Bildern wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden, sie wurden in den Ordner 'kein_datum' kopiert/verschoben.""")
+
+
