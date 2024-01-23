@@ -41,7 +41,10 @@ while True:
                  
 Willst du die Bilder in die Ordner kopieren[1] oder verschieben[2] ?
 > """))
-        break
+        if eingabe in [1, 2]:
+            break
+        else:
+            print("Biite gib 1 oder 2 ein!")
     except ValueError:
         print("Biite gib 1 oder 2 ein!")
 
@@ -58,9 +61,12 @@ Wie willst du die Bilder sortieren ?
 [6] Monat > Tag
 
 > """))
-        break
+        if eingabe_sortierung in [1, 2 , 3, 4 ,5 ,6]:
+            break
+        else:
+            print("Biite gib eine der Zahlen ein!")
     except ValueError:
-        print("Biite gib eine der Zahlen ein ein!")
+        print("Biite gib eine der Zahlen ein!")
 
 
 def kopieren(source, destination):
