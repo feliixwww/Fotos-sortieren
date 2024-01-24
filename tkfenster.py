@@ -2,26 +2,16 @@ from pathlib import Path
 
 import PIL.Image
 
+from PIL import ImageTk, Image
+
 import PIL.ExifTags
 
 import shutil
 
 import tkinter as tk
 
-
-
-so_oft_keine_daten = 0
-
-global liste_bilder
-liste_bilder = []
-
 liste_monate = ["platzhalter", "_Januar", "_Februar", "_März", "_April", "_Mai", "_Juni", "_Juli", "_August",
                 "_September", "_Oktober", "_November", "_Dezember"]
-
-
-foolproof = 0
-foolproof_2 = 0
-foolproof_3 = 0
 
 window = tk.Tk()
 
@@ -41,21 +31,19 @@ def center_window(window, width, height):
 center_window(window, 800, 800)
 
 
-
-
-
-
-
-
-
 def main():
+    global liste_bilder, so_oft_keine_daten, foolproof, foolproof_2, foolproof_3
+
+    so_oft_keine_daten = 0
+
+    liste_bilder = []
+
+    foolproof = 0
+    foolproof_2 = 0
+    foolproof_3 = 0
+
+
     eingabe_pfad_def()
-
-
-
-
-
-
 
 
 def eingabe_pfad_def():
@@ -88,11 +76,17 @@ def get_eingabe_pfad():
         eingabe_pfadziel_def()
 
 def vorschau_liste_def():
+    global vorschau_liste, vorschau_info
+
+
     path = Path(rf'{eingabe_pfad}')
     for path in path.iterdir():
         if path.suffix in ['.jpg', '.png', '.jpeg']:
-            liste_bilder.append(path.name)#
-    vorschau_liste = tk.Label(text=f"""
+            liste_bilder.append(path.name)
+
+    img_vorschau = ImageTk.PhotoImage(Image.open(f"{eingabe_pfad}\{liste_bilder[0]}"))
+    vorschau_liste = tk.Label(image=f"""
+    {img_vorschau}
     
     
 {liste_bilder[0], liste_bilder[1], liste_bilder[2]}""")
@@ -113,45 +107,62 @@ def vorschau_liste_def():
 
 
 def eingabe_pfadziel_def():
+    global pfad_ziel_text, pfadziel_eingabe_tk, Bestätigen_Zielpfad, knopf_gleiches_verzeichnis, eingabe_pfadziel_gleich
     pfad_ziel_text = tk.Label(text="""
 
-    Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder [1], wenn sie im
+    Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder den Knopf, wenn sie im
     gleichen Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!
     (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)""")
     pfad_ziel_text.pack()
 
-    global pfadziel_eingabe_tk
+
     pfadziel_eingabe_tk = tk.Entry(
         width=50,
     )
     pfadziel_eingabe_tk.pack()
 
-    Bestätigen_Zielpfad = tk.Button(
-        width=15,
-        text="Bestätigen",
-        command=get_eingabe_zielpfad
-    )
-    Bestätigen_Zielpfad.pack()
+    frame = tk.Frame(window)
+    frame.pack()
+
+    Bestätigen_Zielpfad = tk.Button(frame, width=15, text="Bestätigen", command=get_eingabe_zielpfad)
+    Bestätigen_Zielpfad.pack(side=tk.LEFT)
+
+    eingabe_pfadziel_gleich = 0
+
+    knopf_gleiches_verzeichnis = tk.Button(frame, width=15, text="Gleiches Verzeichnis", command=gleiches_verzeichnis_def)
+    knopf_gleiches_verzeichnis.pack(side=tk.LEFT)
+
+
+
 
 
 def get_eingabe_zielpfad():
     global eingabe_pfadziel, foolproof_2
     foolproof_2 += 1
-    eingabe_pfadziel = pfadziel_eingabe_tk.get()
-    if eingabe_pfadziel == "1":
-        eingabe_pfadziel = eingabe_pfad
+    if eingabe_pfadziel_gleich == 0:
+        eingabe_pfadziel = pfadziel_eingabe_tk.get()
     print(eingabe_pfadziel)
 
     if foolproof_2 == 1:
         kopieren_verschieben()
 
 
+def gleiches_verzeichnis_def():
+    global eingabe_pfadziel, eingabe_pfadziel_gleich
+    if eingabe_pfadziel_gleich == 0:
+        eingabe_pfadziel_gleich += 1
+        eingabe_pfadziel = eingabe_pfad
+        knopf_gleiches_verzeichnis.config(bg="green")
+    else:
+        eingabe_pfadziel_gleich -= 1
+        knopf_gleiches_verzeichnis.config(bg="SystemButtonFace")
 
 
 
 
 
 def kopieren_verschieben():
+    global text_kov, frame, knopf_verschieben, knopf_kopieren
     text_kov = tk.Label(text="""
     
     
@@ -160,10 +171,10 @@ def kopieren_verschieben():
 
     frame = tk.Frame(window)
     frame.pack()
-    global knopf_verschieben
+
     knopf_verschieben = tk.Button(frame,width=15, text="verschieben",command=verschieben_variable)
     knopf_verschieben.pack(side=tk.LEFT)
-    global knopf_kopieren
+
     knopf_kopieren = tk.Button(frame,width=15, text="kopieren", command=kopieren_variable)
     knopf_kopieren.pack(side=tk.LEFT)
 
@@ -189,13 +200,12 @@ def kopieren_variable():
 
 
 def eingabe_sortierung_def():
+    global text_sortierung, knopf_sortieren_1, knopf_sortieren_2, knopf_sortieren_3, knopf_sortieren_4, knopf_sortieren_5, knopf_sortieren_6, leeres_label, knopf_sortieren_bestätigen
     text_sortierung = tk.Label(text="""
     
     
     Wie willst du die Bilder sortieren ?""")
     text_sortierung.pack()
-
-    global knopf_sortieren_1, knopf_sortieren_2, knopf_sortieren_3, knopf_sortieren_4, knopf_sortieren_5, knopf_sortieren_6
 
     knopf_sortieren_1=tk.Button(
         text="Jahr",
@@ -264,6 +274,7 @@ def eingabe_sortierung_def():
 
 def sortieren_bestätigt():
     sortierung()
+    end_screen()
 
 
 
@@ -446,17 +457,85 @@ def sortierung():
 
 
 def end_screen():
+    global keine_daten_text, knopf_erneut, leeres_label2, knopf_schließen
     Bestätigen_Quellpfad.pack_forget()
+    pfad_eingabe_text.pack_forget()
+    pfad_eingabe_tk.pack_forget()
 
+    vorschau_liste.pack_forget()
+    vorschau_info.pack_forget()
 
+    pfad_ziel_text.pack_forget()
+    pfadziel_eingabe_tk.pack_forget()
+    Bestätigen_Zielpfad.pack_forget()
+    knopf_gleiches_verzeichnis.pack_forget()
 
+    text_kov.pack_forget()
+    frame.pack_forget()
+    knopf_verschieben.pack_forget()
+    knopf_kopieren.pack_forget()
+
+    text_sortierung.pack_forget()
+    knopf_sortieren_1.pack_forget()
+    knopf_sortieren_2.pack_forget()
+    knopf_sortieren_3.pack_forget()
+    knopf_sortieren_4.pack_forget()
+    knopf_sortieren_5.pack_forget()
+    knopf_sortieren_6.pack_forget()
+    leeres_label.pack_forget()
+    knopf_sortieren_bestätigen.pack_forget()
+
+    if eingabe_kv == 1:
+        kopiert_oder_verschoben = "kopiert"
+    else:
+        kopiert_oder_verschoben = "verschoben"
+
+    if eingabe_sortierung == 1:
+        so_sortiert = "Jahr > Beispielbild.png"
+    elif eingabe_sortierung == 2:
+        so_sortiert = "Jahr > Monat > Beispielbild.png"
+    elif eingabe_sortierung == 3:
+        so_sortiert = "Jahr > Monat > Tag > Beispielbild.png"
+    elif eingabe_sortierung == 4:
+        so_sortiert = "Jahr > Tag > Beispielbild.png"
+    elif eingabe_sortierung == 5:
+        so_sortiert = "Monat > Beispielbild.png"
+    elif eingabe_sortierung == 6:
+        so_sortiert = "Monat > Tag > Beispielbild.png"
 
     keine_daten_text = tk.Label(text=f"""
+    Deine Bilder aus dem Pfad "{eingabe_pfad}" wurden in das Verzeichnis "{eingabe_pfadziel}", {kopiert_oder_verschoben}!
+    Sie wurden in Ordner, wie folgt sortiert: {so_sortiert}
     
-   
-In {so_oft_keine_daten} Bildern wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden, sie wurden in den Ordner 'kein_datum' kopiert/verschoben.   
-""")
+    
+    In {so_oft_keine_daten} Bildern wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden, sie wurden in den Ordner 'kein_datum' kopiert/verschoben.   
+    """)
     keine_daten_text.pack()
+
+
+    knopf_erneut = tk.Button(width=20, text="Weitere Bilder sortieren",command=end_screen_verschwinden)
+    knopf_erneut.pack()
+
+    leeres_label2 = tk.Label(text="""
+    
+    
+    
+    
+    """)
+    leeres_label2.pack()
+
+    knopf_schließen = tk.Button(width=20, text="Schließen", command=window.destroy)
+    knopf_schließen.pack()
+
+
+def end_screen_verschwinden():
+    keine_daten_text.pack_forget()
+    knopf_erneut.pack_forget()
+    leeres_label2.pack_forget()
+    knopf_schließen.pack_forget()
+
+    main()
+
 
 
 main()
