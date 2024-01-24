@@ -28,10 +28,11 @@ def center_window(window, width, height):
     window.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
 
-center_window(window, 800, 800)
+
 
 
 def main():
+    center_window(window, 800, 825)
     global liste_bilder, so_oft_keine_daten, foolproof, foolproof_2, foolproof_3
 
     so_oft_keine_daten = 0
@@ -47,7 +48,7 @@ def main():
 
 
 def eingabe_pfad_def():
-    global pfad_eingabe_text, Bestätigen_Quellpfad, pfad_eingabe_tk
+    global pfad_eingabe_text, Bestätigen_Quellpfad, pfad_eingabe_tk, leeres_label_2
     pfad_eingabe_text = tk.Label(text="""Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hinein!
     (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)""")
     pfad_eingabe_text.pack()
@@ -64,6 +65,11 @@ def eingabe_pfad_def():
     )
     Bestätigen_Quellpfad.pack()
 
+    leeres_label_2 = tk.Label(text=f"""
+
+        """)
+    leeres_label_2.pack()
+
 
 def get_eingabe_pfad():
     global eingabe_pfad, foolproof
@@ -75,8 +81,9 @@ def get_eingabe_pfad():
         vorschau_liste_def()
         eingabe_pfadziel_def()
 
+
 def vorschau_liste_def():
-    global vorschau_liste, vorschau_info
+    global vorschau_liste, vorschau_info, img_1_label, img_2_label, img_3_label, frame_3
 
 
     path = Path(rf'{eingabe_pfad}')
@@ -84,13 +91,33 @@ def vorschau_liste_def():
         if path.suffix in ['.jpg', '.png', '.jpeg']:
             liste_bilder.append(path.name)
 
-    img_vorschau = ImageTk.PhotoImage(Image.open(f"{eingabe_pfad}\{liste_bilder[0]}"))
-    vorschau_liste = tk.Label(image=f"""
-    {img_vorschau}
-    
-    
-{liste_bilder[0], liste_bilder[1], liste_bilder[2]}""")
-    vorschau_liste.pack()
+    frame_3 = tk.Frame(window)
+    frame_3.pack()
+
+    img_1 = Image.open(f"{eingabe_pfad}\{liste_bilder[0]}")
+    img_1_klein = img_1.resize((100, 100))
+    img_1_klein_fertig = ImageTk.PhotoImage(img_1_klein)
+    img_1_label = tk.Label(frame_3)
+    img_1_label.image = img_1_klein_fertig
+    img_1_label['image'] = img_1_label.image
+    img_1_label.pack(side=tk.LEFT)
+
+    img_2 = Image.open(f"{eingabe_pfad}\{liste_bilder[1]}")
+    img_2_klein = img_2.resize((100, 100))
+    img_2_klein_fertig = ImageTk.PhotoImage(img_2_klein)
+    img_2_label = tk.Label(frame_3)
+    img_2_label.image = img_2_klein_fertig
+    img_2_label['image'] = img_2_label.image
+    img_2_label.pack(side=tk.LEFT)
+
+    img_3 = Image.open(f"{eingabe_pfad}\{liste_bilder[2]}")
+    img_3_klein = img_3.resize((100, 100))
+    img_3_klein_fertig = ImageTk.PhotoImage(img_3_klein)
+    img_3_label = tk.Label(frame_3)
+    img_3_label.image = img_3_klein_fertig
+    img_3_label['image'] = img_3_label.image
+    img_3_label.pack(side=tk.LEFT)
+
     vorschau_info = tk.Label(text="""^^^ Hier ist eine Vorschau der Dateien, die sich in dem angegebenen Quellpfad befinden. Fahre fort, wenn es stimmt ^^^
 """)
     vorschau_info.pack()
@@ -458,11 +485,16 @@ def sortierung():
 
 def end_screen():
     global keine_daten_text, knopf_erneut, leeres_label2, knopf_schließen
+    center_window(window, 800, 325)
     Bestätigen_Quellpfad.pack_forget()
     pfad_eingabe_text.pack_forget()
     pfad_eingabe_tk.pack_forget()
+    leeres_label_2.pack_forget()
 
-    vorschau_liste.pack_forget()
+    frame_3.pack_forget()
+    img_1_label.pack_forget()
+    img_2_label.pack_forget()
+    img_3_label.pack_forget()
     vorschau_info.pack_forget()
 
     pfad_ziel_text.pack_forget()
@@ -517,6 +549,7 @@ def end_screen():
     knopf_erneut.pack()
 
     leeres_label2 = tk.Label(text="""
+    
     
     
     
