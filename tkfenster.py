@@ -28,7 +28,10 @@ def center_window(window, width, height):
     window.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
 
+leere_liste = []
 
+
+idiot = 1
 
 
 def main():
@@ -42,7 +45,6 @@ def main():
     foolproof = 0
     foolproof_2 = 0
     foolproof_3 = 0
-
 
     eingabe_pfad_def()
 
@@ -65,31 +67,53 @@ def eingabe_pfad_def():
     )
     Bestätigen_Quellpfad.pack()
 
-    leeres_label_2 = tk.Label(text=f"""
+    if idiot == 2:
+        leeres_label_2.config(fg="red", text=f"""
+        Bitte gib ein gültiges Verzeichnis an, in dem sich Bilder befinden!
+                        """)
+        leeres_label_2.pack()
+    else:
+        leeres_label_2 = tk.Label(text=f"""
 
-        """)
-    leeres_label_2.pack()
+                """)
+        leeres_label_2.pack()
+
 
 
 def get_eingabe_pfad():
-    global eingabe_pfad, foolproof
+    global eingabe_pfad, foolproof, liste_bilder
     foolproof += 1
+
     eingabe_pfad = pfad_eingabe_tk.get()
     print(eingabe_pfad)
 
-    if foolproof == 1:
-        vorschau_liste_def()
-        eingabe_pfadziel_def()
+    liste_bilder = []
+
+    vorschau_liste_def()
+
+
+def eingabe_pfad_forget_def():
+    Bestätigen_Quellpfad.pack_forget()
+    pfad_eingabe_text.pack_forget()
+    pfad_eingabe_tk.pack_forget()
+    leeres_label_2.pack_forget()
+
+
 
 
 def vorschau_liste_def():
-    global vorschau_liste, vorschau_info, img_1_label, img_2_label, img_3_label, frame_3
+    global vorschau_liste, vorschau_info, img_1_label, img_2_label, img_3_label, frame_3, idiot
 
 
     path = Path(rf'{eingabe_pfad}')
     for path in path.iterdir():
         if path.suffix in ['.jpg', '.png', '.jpeg']:
             liste_bilder.append(path.name)
+
+    if liste_bilder == []:
+        idiot = 2
+        print(idiot)
+        return eingabe_pfad_forget_def(), main()
 
     frame_3 = tk.Frame(window)
     frame_3.pack()
@@ -122,6 +146,8 @@ def vorschau_liste_def():
 """)
     vorschau_info.pack()
 
+    eingabe_pfadziel_def()
+
 
 
 
@@ -135,6 +161,11 @@ def vorschau_liste_def():
 
 def eingabe_pfadziel_def():
     global pfad_ziel_text, pfadziel_eingabe_tk, Bestätigen_Zielpfad, knopf_gleiches_verzeichnis, eingabe_pfadziel_gleich
+    if idiot == 2:
+        leeres_label_2.config(fg="red", text=f"""
+        
+                        """)
+
     pfad_ziel_text = tk.Label(text="""
 
     Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder den Knopf, wenn sie im
@@ -537,7 +568,7 @@ def end_screen():
 
     keine_daten_text = tk.Label(text=f"""
     Deine Bilder aus dem Pfad "{eingabe_pfad}" wurden in das Verzeichnis "{eingabe_pfadziel}", {kopiert_oder_verschoben}!
-    Sie wurden in Ordner, wie folgt sortiert: {so_sortiert}
+    Sie wurden in die Ordner, wie folgt sortiert: {so_sortiert}
     
     
     In {so_oft_keine_daten} Bildern wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden, sie wurden in den Ordner 'kein_datum' kopiert/verschoben.   
