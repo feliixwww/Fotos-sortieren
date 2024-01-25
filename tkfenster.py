@@ -32,12 +32,13 @@ leere_liste = []
 
 
 idiot = 1
+idiot_ziel = 1
 
 ort_im_code = 0
 
 
 def main():
-    center_window(window, 800, 825)
+    center_window(window, 800, 850)
     global liste_bilder, so_oft_keine_daten, foolproof, foolproof_2, foolproof_3
 
     so_oft_keine_daten = 0
@@ -53,8 +54,8 @@ def main():
 
 def eingabe_pfad_def():
     global pfad_eingabe_text, Bestätigen_Quellpfad, pfad_eingabe_tk, leeres_label_2, pfad_eingabe_als_label
-    pfad_eingabe_text = tk.Label(text="""Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hinein!
-    (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)""")
+    pfad_eingabe_text = tk.Label(text="Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden"
+                                      " hinein!\n")
     pfad_eingabe_text.pack()
 
     pfad_eingabe_tk = tk.Entry(
@@ -74,7 +75,7 @@ def eingabe_pfad_def():
     )
     Bestätigen_Quellpfad.pack()
 
-    leeres_label_2 = tk.Label(text="\n")
+    leeres_label_2 = tk.Label(text="")
     leeres_label_2.pack()
 
     if idiot == 2:
@@ -91,8 +92,7 @@ def get_eingabe_pfad():
 
     liste_bilder = []
 
-    if idiot == 2:
-        leeres_label_2.pack_forget()
+    leeres_label_2.pack_forget()
     eingabe_pfad_bestätigt()
     vorschau_liste_def()
 
@@ -101,7 +101,7 @@ def eingabe_pfad_bestätigt():
     Bestätigen_Quellpfad.pack_forget()
     pfad_eingabe_tk.pack_forget()
 
-    pfad_eingabe_als_label.config(fg="green", text=f"\n\nAusgewählter Pfad:{eingabe_pfad}\n\n")
+    pfad_eingabe_als_label.config(fg="green", text=f"\nAusgewählter Pfad:{eingabe_pfad}\n\n")
     pfad_eingabe_als_label.pack()
 
 
@@ -124,8 +124,7 @@ def vorschau_liste_def():
             return vorschau_bilder_def()
         except OSError:
             idiot = 2
-
-            return eingabe_pfad_forget_def(), main()
+            return neu_starten_def(), main()
 
 
 def all_children(window):
@@ -158,7 +157,7 @@ def vorschau_bilder_def():
     if not liste_bilder:
         idiot = 2
         print(idiot)
-        return eingabe_pfad_forget_def(), main()
+        return neu_starten_def(), main()
 
     frame_3 = tk.Frame(window)
     frame_3.pack()
@@ -187,9 +186,8 @@ def vorschau_bilder_def():
     img_3_label['image'] = img_3_label.image
     img_3_label.pack(side=tk.LEFT)
 
-    vorschau_info = tk.Label(text="""^^^ Hier ist eine Vorschau der Dateien, die sich in dem angegebenen Quellpfad befinden. Fahre fort, wenn es stimmt ^^^
-    
-    """)
+    vorschau_info = tk.Label(text="^^^ Hier ist eine Vorschau der Dateien, die sich in dem angegebenen Quellpfad"
+                                  "befinden. Fahre fort, wenn es stimmt ^^^\n\n")
     vorschau_info.pack()
 
     neu_starten_knopf_vorschau = tk.Button(
@@ -202,19 +200,26 @@ def vorschau_bilder_def():
     eingabe_pfadziel_def()
 
 
+def neu_starten_get_ziel():
+    pfad_ziel_text.pack_forget()
+    pfadziel_eingabe_tk.pack_forget()
+    pfadziel_eingabe_als_label.pack_forget()
+    frame.pack_forget()
+    Bestätigen_Zielpfad.pack_forget()
+    knopf_gleiches_verzeichnis.pack_forget()
+    leeres_label_2.pack_forget()
+
+    return eingabe_pfadziel_def()
+
+
+
 def eingabe_pfadziel_def():
     global pfad_ziel_text, pfadziel_eingabe_tk, Bestätigen_Zielpfad, knopf_gleiches_verzeichnis,\
-        eingabe_pfadziel_gleich, pfadziel_eingabe_als_label
-    if idiot == 2:
-        leeres_label_2.config(fg="red", text=f"""
-        
-                        """)
+        eingabe_pfadziel_gleich, pfadziel_eingabe_als_label, frame
 
-    pfad_ziel_text = tk.Label(text="""
-    
-    Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder den Knopf, wenn sie im
-    gleichen Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!
-    (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)""")
+    pfad_ziel_text = tk.Label(text="\n\nBitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung\n"
+                                   "befinden sollen, hineinoder drücke den Knopf, wenn sie im gleichen Verzeichis\n"
+                                   "sortiert werden sollen, wo sie sich jetzt befinden!\n")
     pfad_ziel_text.pack()
 
     pfadziel_eingabe_tk = tk.Entry(
@@ -238,17 +243,25 @@ def eingabe_pfadziel_def():
     knopf_gleiches_verzeichnis = tk.Button(frame, width=15, text="Gleiches Verzeichnis", command=gleiches_verzeichnis_def)
     knopf_gleiches_verzeichnis.pack(side=tk.LEFT)
 
+    if idiot_ziel >= 2:
+        leeres_label_2.config(fg="red", text=f"\nBitte gib ein gültiges Verzeichnis an, in dem sich Bilder befinden!\n")
+        leeres_label_2.pack()
+
 
 def get_eingabe_zielpfad():
-    global eingabe_pfadziel, foolproof_2
-    foolproof_2 += 1
+    global eingabe_pfadziel, idiot_ziel
+
     if eingabe_pfadziel_gleich == 0:
         eingabe_pfadziel = pfadziel_eingabe_tk.get()
     print(eingabe_pfadziel)
 
-    if foolproof_2 == 1:
-        eingabe_zielpfad_bestätigt()
-        kopieren_verschieben()
+    path = Path(rf'{eingabe_pfadziel}')
+    if path.exists():
+        leeres_label_2.pack_forget()
+        return eingabe_zielpfad_bestätigt(), kopieren_verschieben()
+    else:
+        idiot_ziel += 1
+        return neu_starten_get_ziel()
 
 
 def eingabe_zielpfad_bestätigt():
@@ -256,8 +269,7 @@ def eingabe_zielpfad_bestätigt():
     knopf_gleiches_verzeichnis.pack_forget()
     pfadziel_eingabe_tk.pack_forget()
 
-    pfadziel_eingabe_als_label.config(fg="green", text=f"""
-    \nAusgewählter Ziel-Pfad:{eingabe_pfadziel}""")
+    pfadziel_eingabe_als_label.config(fg="green", text=f"\nAusgewählter Ziel-Pfad:{eingabe_pfadziel}")
     pfadziel_eingabe_als_label.pack()
 
 
@@ -274,8 +286,7 @@ def gleiches_verzeichnis_def():
 
 def kopieren_verschieben():
     global text_kov, frame, knopf_verschieben, knopf_kopieren
-    text_kov = tk.Label(text="""
-    Willst du die Bilder in die Ordner kopieren oder verschieben ?""")
+    text_kov = tk.Label(text="Willst du die Bilder in die Ordner kopieren oder verschieben ?\n")
     text_kov.pack()
 
     frame = tk.Frame(window)
@@ -313,7 +324,7 @@ def eingabe_sortierung_def():
     text_sortierung = tk.Label(text="""
     
     
-    Wie willst du die Bilder sortieren ?""")
+    Wie willst du die Bilder sortieren ?\n""")
     text_sortierung.pack()
 
     knopf_sortieren_1 = tk.Button(
@@ -359,7 +370,6 @@ def eingabe_sortierung_def():
     knopf_sortieren_6.pack()
 
     leeres_label = tk.Label(text=f"""
-    
     """)
     leeres_label.pack()
 
@@ -368,7 +378,7 @@ def eingabe_sortierung_def():
         command=sortieren_bestätigt,
         width=15
     )
-    knopf_sortieren_bestätigen.pack()
+
 
 
 def sortieren_bestätigt():
@@ -385,6 +395,7 @@ def knopf_sortieren_def_1():
     knopf_sortieren_4.config(bg="SystemButtonFace")
     knopf_sortieren_5.config(bg="SystemButtonFace")
     knopf_sortieren_6.config(bg="SystemButtonFace")
+    knopf_sortieren_bestätigen.pack()
 
 
 def knopf_sortieren_def_2():
@@ -397,6 +408,7 @@ def knopf_sortieren_def_2():
     knopf_sortieren_4.config(bg="SystemButtonFace")
     knopf_sortieren_5.config(bg="SystemButtonFace")
     knopf_sortieren_6.config(bg="SystemButtonFace")
+    knopf_sortieren_bestätigen.pack()
 
 
 def knopf_sortieren_def_3():
@@ -409,6 +421,7 @@ def knopf_sortieren_def_3():
     knopf_sortieren_4.config(bg="SystemButtonFace")
     knopf_sortieren_5.config(bg="SystemButtonFace")
     knopf_sortieren_6.config(bg="SystemButtonFace")
+    knopf_sortieren_bestätigen.pack()
 
 
 def knopf_sortieren_def_4():
@@ -421,6 +434,7 @@ def knopf_sortieren_def_4():
     knopf_sortieren_3.config(bg="SystemButtonFace")
     knopf_sortieren_5.config(bg="SystemButtonFace")
     knopf_sortieren_6.config(bg="SystemButtonFace")
+    knopf_sortieren_bestätigen.pack()
 
 
 def knopf_sortieren_def_5():
@@ -433,6 +447,7 @@ def knopf_sortieren_def_5():
     knopf_sortieren_3.config(bg="SystemButtonFace")
     knopf_sortieren_4.config(bg="SystemButtonFace")
     knopf_sortieren_6.config(bg="SystemButtonFace")
+    knopf_sortieren_bestätigen.pack()
 
 
 def knopf_sortieren_def_6():
@@ -445,6 +460,7 @@ def knopf_sortieren_def_6():
     knopf_sortieren_3.config(bg="SystemButtonFace")
     knopf_sortieren_4.config(bg="SystemButtonFace")
     knopf_sortieren_5.config(bg="SystemButtonFace")
+    knopf_sortieren_bestätigen.pack()
 
 
 def kopieren(source, destination):
@@ -555,7 +571,7 @@ def sortierung():
 
 def end_screen():
     global keine_daten_text, knopf_erneut, leeres_label2, knopf_schließen
-    center_window(window, 800, 325)
+    center_window(window, 800, 400)
 
     neu_starten_def()
 
@@ -577,23 +593,17 @@ def end_screen():
     elif eingabe_sortierung == 6:
         so_sortiert = "Monat > Tag > Beispielbild.png"
 
-    keine_daten_text = tk.Label(text=f"""
-    Deine Bilder aus dem Pfad "{eingabe_pfad}" wurden in das Verzeichnis "{eingabe_pfadziel}", {kopiert_oder_verschoben}!
-    Sie wurden in die Ordner, wie folgt sortiert: {so_sortiert}
-    
-    
-    In {so_oft_keine_daten} Bildern wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden, sie wurden in den Ordner 'kein_datum' kopiert/verschoben.   
-    """)
+    keine_daten_text = tk.Label(text=f"Deine Bilder aus dem Pfad:\n\n {eingabe_pfad}\n\n\n wurden in das Verzeichnis:"
+                                     f"\n\n{eingabe_pfadziel}\n\n{kopiert_oder_verschoben}!\n\n\n Sie wurden in die"
+                                     f"Ordner, wie folgt sortiert: {so_sortiert}\n\n\n In {so_oft_keine_daten} Bildern"
+                                     f"wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden, sie"
+                                     f"wurden in den Ordner 'kein_datum' kopiert/verschoben.\n\n")
     keine_daten_text.pack()
 
     knopf_erneut = tk.Button(width=20, text="Weitere Bilder sortieren",command=neu_starten_knopf_def)
     knopf_erneut.pack()
 
     leeres_label2 = tk.Label(text="""
-    
-    
-    
-    
     
     """)
     leeres_label2.pack()
