@@ -17,13 +17,13 @@ window = tk.Tk()
 
 window.title("Foto-Sortierer")
 
+
 def center_window(window, width, height):
 
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
-
 
     window.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
@@ -32,6 +32,8 @@ leere_liste = []
 
 
 idiot = 1
+
+ort_im_code = 0
 
 
 def main():
@@ -50,7 +52,7 @@ def main():
 
 
 def eingabe_pfad_def():
-    global pfad_eingabe_text, Bestätigen_Quellpfad, pfad_eingabe_tk, leeres_label_2
+    global pfad_eingabe_text, Bestätigen_Quellpfad, pfad_eingabe_tk, leeres_label_2, pfad_eingabe_als_label
     pfad_eingabe_text = tk.Label(text="""Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hinein!
     (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)""")
     pfad_eingabe_text.pack()
@@ -60,6 +62,11 @@ def eingabe_pfad_def():
     )
     pfad_eingabe_tk.pack()
 
+    pfad_eingabe_als_label = tk.Label(
+        text=""
+    )
+    pfad_eingabe_als_label.pack()
+
     Bestätigen_Quellpfad = tk.Button(
         text="Bestätigen",
         command=get_eingabe_pfad,
@@ -67,16 +74,11 @@ def eingabe_pfad_def():
     )
     Bestätigen_Quellpfad.pack()
 
-    if idiot == 2:
-        leeres_label_2.config(fg="red", text=f"""
-        Bitte gib ein gültiges Verzeichnis an, in dem sich Bilder befinden!
-                        """)
-        leeres_label_2.pack()
-    else:
-        leeres_label_2 = tk.Label(text=f"""
+    leeres_label_2 = tk.Label(text="\n")
+    leeres_label_2.pack()
 
-                """)
-        leeres_label_2.pack()
+    if idiot == 2:
+        leeres_label_2.config(fg="red", text=f"\nBitte gib ein gültiges Verzeichnis an, in dem sich Bilder befinden!\n")
 
 
 
@@ -89,28 +91,71 @@ def get_eingabe_pfad():
 
     liste_bilder = []
 
+    if idiot == 2:
+        leeres_label_2.pack_forget()
+    eingabe_pfad_bestätigt()
     vorschau_liste_def()
+
+
+def eingabe_pfad_bestätigt():
+    Bestätigen_Quellpfad.pack_forget()
+    pfad_eingabe_tk.pack_forget()
+
+    pfad_eingabe_als_label.config(fg="green", text=f"\n\nAusgewählter Pfad:{eingabe_pfad}\n\n")
+    pfad_eingabe_als_label.pack()
 
 
 def eingabe_pfad_forget_def():
     Bestätigen_Quellpfad.pack_forget()
     pfad_eingabe_text.pack_forget()
     pfad_eingabe_tk.pack_forget()
-    leeres_label_2.pack_forget()
-
-
+    pfad_eingabe_als_label.pack_forget()
 
 
 def vorschau_liste_def():
-    global vorschau_liste, vorschau_info, img_1_label, img_2_label, img_3_label, frame_3, idiot
-
+    global vorschau_liste, idiot, leeres_label_2
 
     path = Path(rf'{eingabe_pfad}')
-    for path in path.iterdir():
-        if path.suffix in ['.jpg', '.png', '.jpeg']:
-            liste_bilder.append(path.name)
+    while True:
+        try:
+            for path in path.iterdir():
+                if path.suffix in ['.jpg', '.png', '.jpeg']:
+                    liste_bilder.append(path.name)
+            return vorschau_bilder_def()
+        except OSError:
+            idiot = 2
 
-    if liste_bilder == []:
+            return eingabe_pfad_forget_def(), main()
+
+
+def all_children(window):
+    _list = window.winfo_children()
+
+    for item in _list:
+        if item.winfo_children():
+            _list.extend(item.winfo_children())
+
+    return _list
+
+
+def neu_starten_def():
+    widget_list = all_children(window)
+    for item in widget_list:
+        item.pack_forget()
+
+
+def neu_starten_knopf_def():
+    global idiot
+    idiot = 1
+    return neu_starten_def(), main()
+
+
+
+
+def vorschau_bilder_def():
+    global img_1_label, img_2_label, img_3_label, frame_3, vorschau_info, neu_starten_knopf_vorschau
+
+    if not liste_bilder:
         idiot = 2
         print(idiot)
         return eingabe_pfad_forget_def(), main()
@@ -143,41 +188,44 @@ def vorschau_liste_def():
     img_3_label.pack(side=tk.LEFT)
 
     vorschau_info = tk.Label(text="""^^^ Hier ist eine Vorschau der Dateien, die sich in dem angegebenen Quellpfad befinden. Fahre fort, wenn es stimmt ^^^
-""")
+    
+    """)
     vorschau_info.pack()
+
+    neu_starten_knopf_vorschau = tk.Button(
+        text="Neu Starten",
+        command=neu_starten_knopf_def,
+        width=15
+    )
+    neu_starten_knopf_vorschau.pack()
 
     eingabe_pfadziel_def()
 
 
-
-
-
-
-
-
-
-
-
-
 def eingabe_pfadziel_def():
-    global pfad_ziel_text, pfadziel_eingabe_tk, Bestätigen_Zielpfad, knopf_gleiches_verzeichnis, eingabe_pfadziel_gleich
+    global pfad_ziel_text, pfadziel_eingabe_tk, Bestätigen_Zielpfad, knopf_gleiches_verzeichnis,\
+        eingabe_pfadziel_gleich, pfadziel_eingabe_als_label
     if idiot == 2:
         leeres_label_2.config(fg="red", text=f"""
         
                         """)
 
     pfad_ziel_text = tk.Label(text="""
-
+    
     Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder den Knopf, wenn sie im
     gleichen Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!
     (Disclaimer: Bei falscher Angabe, könnte das Programm nicht funktionieren)""")
     pfad_ziel_text.pack()
 
-
     pfadziel_eingabe_tk = tk.Entry(
         width=50,
     )
     pfadziel_eingabe_tk.pack()
+
+    pfadziel_eingabe_als_label = tk.Label(
+        text=""
+    )
+    pfadziel_eingabe_als_label.pack()
 
     frame = tk.Frame(window)
     frame.pack()
@@ -191,9 +239,6 @@ def eingabe_pfadziel_def():
     knopf_gleiches_verzeichnis.pack(side=tk.LEFT)
 
 
-
-
-
 def get_eingabe_zielpfad():
     global eingabe_pfadziel, foolproof_2
     foolproof_2 += 1
@@ -202,7 +247,18 @@ def get_eingabe_zielpfad():
     print(eingabe_pfadziel)
 
     if foolproof_2 == 1:
+        eingabe_zielpfad_bestätigt()
         kopieren_verschieben()
+
+
+def eingabe_zielpfad_bestätigt():
+    Bestätigen_Zielpfad.pack_forget()
+    knopf_gleiches_verzeichnis.pack_forget()
+    pfadziel_eingabe_tk.pack_forget()
+
+    pfadziel_eingabe_als_label.config(fg="green", text=f"""
+    \nAusgewählter Ziel-Pfad:{eingabe_pfadziel}""")
+    pfadziel_eingabe_als_label.pack()
 
 
 def gleiches_verzeichnis_def():
@@ -216,14 +272,9 @@ def gleiches_verzeichnis_def():
         knopf_gleiches_verzeichnis.config(bg="SystemButtonFace")
 
 
-
-
-
 def kopieren_verschieben():
     global text_kov, frame, knopf_verschieben, knopf_kopieren
     text_kov = tk.Label(text="""
-    
-    
     Willst du die Bilder in die Ordner kopieren oder verschieben ?""")
     text_kov.pack()
 
@@ -256,23 +307,21 @@ def kopieren_variable():
         eingabe_sortierung_def()
 
 
-
 def eingabe_sortierung_def():
-    global text_sortierung, knopf_sortieren_1, knopf_sortieren_2, knopf_sortieren_3, knopf_sortieren_4, knopf_sortieren_5, knopf_sortieren_6, leeres_label, knopf_sortieren_bestätigen
+    global text_sortierung, knopf_sortieren_1, knopf_sortieren_2, knopf_sortieren_3, knopf_sortieren_4,\
+        knopf_sortieren_5, knopf_sortieren_6, leeres_label, knopf_sortieren_bestätigen
     text_sortierung = tk.Label(text="""
     
     
     Wie willst du die Bilder sortieren ?""")
     text_sortierung.pack()
 
-    knopf_sortieren_1=tk.Button(
+    knopf_sortieren_1 = tk.Button(
         text="Jahr",
         command=knopf_sortieren_def_1,
         width=15
     )
     knopf_sortieren_1.pack()
-
-
 
     knopf_sortieren_2 = tk.Button(
         text="Jahr > Monat",
@@ -281,16 +330,12 @@ def eingabe_sortierung_def():
     )
     knopf_sortieren_2.pack()
 
-
-
     knopf_sortieren_3 = tk.Button(
         text="Jahr > Monat > Tag",
         command=knopf_sortieren_def_3,
         width=15
     )
     knopf_sortieren_3.pack()
-
-
 
     knopf_sortieren_4 = tk.Button(
         text="Jahr > Tag",
@@ -299,16 +344,12 @@ def eingabe_sortierung_def():
     )
     knopf_sortieren_4.pack()
 
-
-
     knopf_sortieren_5 = tk.Button(
         text="Monat",
         command=knopf_sortieren_def_5,
         width=15
     )
     knopf_sortieren_5.pack()
-
-
 
     knopf_sortieren_6 = tk.Button(
         text="Monat > Tag",
@@ -323,7 +364,7 @@ def eingabe_sortierung_def():
     leeres_label.pack()
 
     knopf_sortieren_bestätigen = tk.Button(
-        text="Bestätigen",
+        text=">Bestätigen<",
         command=sortieren_bestätigt,
         width=15
     )
@@ -333,7 +374,6 @@ def eingabe_sortierung_def():
 def sortieren_bestätigt():
     sortierung()
     end_screen()
-
 
 
 def knopf_sortieren_def_1():
@@ -426,7 +466,6 @@ def exif_lesen(bild):
         if k in PIL.ExifTags.TAGS
     }
 
-
     datumuhrzeit = ""
     jahr = ""
     monat = ""
@@ -517,36 +556,8 @@ def sortierung():
 def end_screen():
     global keine_daten_text, knopf_erneut, leeres_label2, knopf_schließen
     center_window(window, 800, 325)
-    Bestätigen_Quellpfad.pack_forget()
-    pfad_eingabe_text.pack_forget()
-    pfad_eingabe_tk.pack_forget()
-    leeres_label_2.pack_forget()
 
-    frame_3.pack_forget()
-    img_1_label.pack_forget()
-    img_2_label.pack_forget()
-    img_3_label.pack_forget()
-    vorschau_info.pack_forget()
-
-    pfad_ziel_text.pack_forget()
-    pfadziel_eingabe_tk.pack_forget()
-    Bestätigen_Zielpfad.pack_forget()
-    knopf_gleiches_verzeichnis.pack_forget()
-
-    text_kov.pack_forget()
-    frame.pack_forget()
-    knopf_verschieben.pack_forget()
-    knopf_kopieren.pack_forget()
-
-    text_sortierung.pack_forget()
-    knopf_sortieren_1.pack_forget()
-    knopf_sortieren_2.pack_forget()
-    knopf_sortieren_3.pack_forget()
-    knopf_sortieren_4.pack_forget()
-    knopf_sortieren_5.pack_forget()
-    knopf_sortieren_6.pack_forget()
-    leeres_label.pack_forget()
-    knopf_sortieren_bestätigen.pack_forget()
+    neu_starten_def()
 
     if eingabe_kv == 1:
         kopiert_oder_verschoben = "kopiert"
@@ -575,8 +586,7 @@ def end_screen():
     """)
     keine_daten_text.pack()
 
-
-    knopf_erneut = tk.Button(width=20, text="Weitere Bilder sortieren",command=end_screen_verschwinden)
+    knopf_erneut = tk.Button(width=20, text="Weitere Bilder sortieren",command=neu_starten_knopf_def)
     knopf_erneut.pack()
 
     leeres_label2 = tk.Label(text="""
@@ -601,11 +611,7 @@ def end_screen_verschwinden():
     main()
 
 
-
 main()
-
-
-
 
 
 window.mainloop()
