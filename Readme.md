@@ -1,6 +1,6 @@
 ## Visualisierte Version nutzen
 
-- Um die visualisierte Version zu nutzen, muss nur die .exe-Datei im ordner `dist` geöffnet werden
+- Um die visualisierte Version zu nutzen, musst du nur die .exe-Datei im ordner `dist` geöffnet werden
 - Dann beginnt das Programm und fragt die einzelnen Schritte ab
 - Dafür werden keine extra Installationen von Modulen/Python benötigt
 ___
@@ -8,8 +8,8 @@ ___
 ## Alternative Nutzung
 
 - Alternativ kannst du das Programm auch ohne das visualisierte GUI nutzen
-- Um zu beginnen, starte einfach die Datei `main.py` in deinem Python-Interpreter und befolge die Schritte
-- Die folgenden Schritte beschreiben die Nutzung des Programms in Python und beschreiben jede Interaktion
+- Um zu beginnen, starte einfach die Datei `main.py` in deinem Python-Interpreter und befolge die Schritte in der Konsole
+- Die folgenden Schritte erläutern die Nutzung des Programms in Python und beschreiben jede Interaktion
 
 
 ## Vor dem Start
@@ -29,7 +29,7 @@ im Programm führen kann
 
 ## Auswahl des Ziels
 
-- Das gleiche Prozedere gilt auch beim auswählen des Zielordners im Anschluss, hier gibt es aber, um Zeit zu sparen
+- Das gleiche Prozedere gilt auch beim Auswählen des Zielordners im Anschluss, hier gibt es aber, um Zeit zu sparen
 auch die Option, nur eine `1` zu schreiben, wodurch die sortierten Ordner in dem Verzeichnis erstellt werden, wo sich
 deine Bilder, laut der vorher gemachten Angabe, zurzeit befinden
 
