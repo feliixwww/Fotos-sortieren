@@ -1,3 +1,17 @@
+## Visualisierte Version nutzen
+
+- Um die visualisierte Version zu nutzen, muss nur die .exe-Datei im ordner `dist` geöffnet werden
+- Dann beginnt das Programm und fragt die einzelnen Schritte ab
+- Dafür werden keine extra Installationen von Modulen/Python benötigt
+___
+
+## Alternative Nutzung
+
+- Alternativ kannst du das Programm auch ohne das visualisierte GUI nutzen
+- Um zu beginnen, starte einfach die Datei `main.py` in deinem Python-Interpreter und befolge die Schritte
+- Die folgenden Schritte beschreiben die Nutzung des Programms in Python und beschreiben jede Interaktion
+
+
 ## Vor dem Start
 
 - Damit das Programm funktioniert, werden die Module "pillow" und "pathlib" benötigt
