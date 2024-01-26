@@ -22,7 +22,6 @@ Bitte kopiere den Dateipfad, in dem sich die zu sortierenden Bilder befinden hin
 > """)
 
 
-
 eingabe_pfadziel = input("""
 Bitte kopiere den Dateipfad, in dem sich die Bilder nach der Sortierung befinden sollen, oder [1], wenn sie im gleichen
 Verzeichis sortiert werden sollen, wo sie sich jetzt befinden!

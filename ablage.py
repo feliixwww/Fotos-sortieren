@@ -1,3 +1,12 @@
+
+
+
+
+#test datei, nicht relevant für das projekt
+
+
+
+
 from pathlib import Path
 
 import PIL.Image
