@@ -19,7 +19,6 @@ window.title("Foto-Sortierer")
 
 
 def center_window(window, width, height):
-
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
@@ -30,7 +29,6 @@ def center_window(window, width, height):
 
 leere_liste = []
 
-
 idiot = 1
 idiot_ziel = 1
 
@@ -39,7 +37,7 @@ ort_im_code = 0
 
 def main():
     center_window(window, 800, 850)
-    global liste_bilder, so_oft_keine_daten, foolproof, foolproof_2, foolproof_3
+    global liste_bilder, so_oft_keine_daten, foolproof, foolproof_2, foolproof_3, dateien_schon_da
 
     so_oft_keine_daten = 0
 
@@ -48,6 +46,8 @@ def main():
     foolproof = 0
     foolproof_2 = 0
     foolproof_3 = 0
+
+    dateien_schon_da = 0
 
     eingabe_pfad_def()
 
@@ -143,8 +143,9 @@ def neu_starten_def():
 
 
 def neu_starten_knopf_def():
-    global idiot
+    global idiot, idiot_ziel
     idiot = 1
+    idiot_ziel = 1
     return neu_starten_def(), main()
 
 
@@ -167,21 +168,23 @@ def vorschau_bilder_def():
     img_1_label['image'] = img_1_label.image
     img_1_label.pack(side=tk.LEFT)
 
-    img_2 = Image.open(f"{eingabe_pfad}\{liste_bilder[1]}")
-    img_2_klein = img_2.resize((100, 100))
-    img_2_klein_fertig = ImageTk.PhotoImage(img_2_klein)
-    img_2_label = tk.Label(frame_3)
-    img_2_label.image = img_2_klein_fertig
-    img_2_label['image'] = img_2_label.image
-    img_2_label.pack(side=tk.LEFT)
+    if len(liste_bilder) > 1:
+        img_2 = Image.open(f"{eingabe_pfad}\{liste_bilder[1]}")
+        img_2_klein = img_2.resize((100, 100))
+        img_2_klein_fertig = ImageTk.PhotoImage(img_2_klein)
+        img_2_label = tk.Label(frame_3)
+        img_2_label.image = img_2_klein_fertig
+        img_2_label['image'] = img_2_label.image
+        img_2_label.pack(side=tk.LEFT)
 
-    img_3 = Image.open(f"{eingabe_pfad}\{liste_bilder[2]}")
-    img_3_klein = img_3.resize((100, 100))
-    img_3_klein_fertig = ImageTk.PhotoImage(img_3_klein)
-    img_3_label = tk.Label(frame_3)
-    img_3_label.image = img_3_klein_fertig
-    img_3_label['image'] = img_3_label.image
-    img_3_label.pack(side=tk.LEFT)
+    if len(liste_bilder) > 2:
+        img_3 = Image.open(f"{eingabe_pfad}\{liste_bilder[2]}")
+        img_3_klein = img_3.resize((100, 100))
+        img_3_klein_fertig = ImageTk.PhotoImage(img_3_klein)
+        img_3_label = tk.Label(frame_3)
+        img_3_label.image = img_3_klein_fertig
+        img_3_label['image'] = img_3_label.image
+        img_3_label.pack(side=tk.LEFT)
 
     vorschau_info = tk.Label(text="^^^ Hier ist eine Vorschau der Dateien, die sich in dem angegebenen Quellpfad"
                                   "befinden. Fahre fort, wenn es stimmt ^^^\n\n")
@@ -253,7 +256,13 @@ def get_eingabe_zielpfad():
     print(eingabe_pfadziel)
 
     path = Path(rf'{eingabe_pfadziel}')
+
     if path.exists():
+        if eingabe_pfadziel == "":
+            idiot_ziel += 1
+            print(idiot)
+            return neu_starten_get_ziel()
+
         leeres_label_2.pack_forget()
         return eingabe_zielpfad_bestätigt(), kopieren_verschieben()
     else:
@@ -295,6 +304,7 @@ def kopieren_verschieben():
     knopf_kopieren = tk.Button(frame, width=15, text="kopieren", command=kopieren_variable)
     knopf_kopieren.pack(side=tk.LEFT)
 
+
 def verschieben_variable():
     global eingabe_kv, foolproof_3
     foolproof_3 += 1
@@ -304,6 +314,8 @@ def verschieben_variable():
     knopf_kopieren.config(bg="SystemButtonFace")
     if foolproof_3 == 1:
         eingabe_sortierung_def()
+
+
 def kopieren_variable():
     global eingabe_kv, foolproof_3
     foolproof_3 += 1
@@ -395,7 +407,6 @@ def knopf_sortieren_def_1():
 
 
 def knopf_sortieren_def_2():
-
     global eingabe_sortierung
     eingabe_sortierung = 2
     knopf_sortieren_2.config(bg="green")
@@ -408,7 +419,6 @@ def knopf_sortieren_def_2():
 
 
 def knopf_sortieren_def_3():
-
     global eingabe_sortierung
     eingabe_sortierung = 3
     knopf_sortieren_3.config(bg="green")
@@ -421,7 +431,6 @@ def knopf_sortieren_def_3():
 
 
 def knopf_sortieren_def_4():
-
     global eingabe_sortierung
     eingabe_sortierung = 4
     knopf_sortieren_4.config(bg="green")
@@ -434,7 +443,6 @@ def knopf_sortieren_def_4():
 
 
 def knopf_sortieren_def_5():
-
     global eingabe_sortierung
     eingabe_sortierung = 5
     knopf_sortieren_5.config(bg="green")
@@ -447,7 +455,6 @@ def knopf_sortieren_def_5():
 
 
 def knopf_sortieren_def_6():
-
     global eingabe_sortierung
     eingabe_sortierung = 6
     knopf_sortieren_6.config(bg="green")
@@ -460,13 +467,19 @@ def knopf_sortieren_def_6():
 
 
 def kopieren(source, destination):
+    global dateien_schon_da
 
     shutil.copy(source, destination)
 
 
 def verschieben(source, destination):
+    global dateien_schon_da
 
-    shutil.move(source, destination)
+    try:
+        shutil.move(source, destination)
+
+    except shutil.Error:
+        dateien_schon_da += 1
 
 
 def exif_lesen(bild):
@@ -590,13 +603,19 @@ def end_screen():
         so_sortiert = "Monat > Tag > Beispielbild.png"
 
     keine_daten_text = tk.Label(text=f"Deine Bilder aus dem Pfad:\n\n {eingabe_pfad}\n\n\n wurden in das Verzeichnis:"
-                                     f"\n\n{eingabe_pfadziel}\n\n{kopiert_oder_verschoben}!\n\n\n Sie wurden in die"
+                                     f"\n\n{eingabe_pfadziel}\n\n{kopiert_oder_verschoben}!\n\n Sie wurden in die"
                                      f" Ordner, wie folgt sortiert: {so_sortiert}\n\n\n In {so_oft_keine_daten} Bildern"
                                      f" wurde das DateTime Attribut nicht in den EXIF-Daten der Datei gefunden,\nsie"
                                      f" wurden in den Ordner 'kein_datum' kopiert/verschoben.\n\n")
     keine_daten_text.pack()
 
-    knopf_erneut = tk.Button(width=20, text="Weitere Bilder sortieren",command=neu_starten_knopf_def)
+    nicht_verschoben = tk.Label(text=f"{dateien_schon_da} Bilder existieren bereits im Zielverzeichnis, sie wurden"
+                                     f" nicht {kopiert_oder_verschoben}\n")
+
+    if dateien_schon_da > 0:
+        nicht_verschoben.pack()
+
+    knopf_erneut = tk.Button(width=20, text="Weitere Bilder sortieren", command=neu_starten_knopf_def)
     knopf_erneut.pack()
 
     leeres_label2 = tk.Label(text="""
@@ -618,6 +637,5 @@ def end_screen_verschwinden():
 
 
 main()
-
 
 window.mainloop()
